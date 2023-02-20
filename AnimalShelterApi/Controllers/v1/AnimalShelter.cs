@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AnimalShelterApi.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
+using AnimalShelterApi.Models;
 
 namespace AnimalShelterApi.Controllers.v1
 {
