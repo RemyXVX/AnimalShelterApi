@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AnimalShelterApi.Models;
@@ -11,68 +10,68 @@ namespace AnimalShelterApi.Controllers.v1
   [Route("api/v{version:apiVersion}/[controller]")]
   [ApiVersion("1.0")]
 
-  public class SheltersController : ControllerBase
+  public class AnimalController : ControllerBase
   {
     private readonly AnimalShelterApiContext _db;
 
-    public SheltersController(AnimalShelterApiContext db)
+    public AnimalController(AnimalShelterApiContext db)
     {
       _db = db;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Shelter>>> Get()//string comment, string group, string userName)
+    public async Task<ActionResult<IEnumerable<Animal>>> Get(string name, string description, string type)
     {
-      IQueryable<Shelter> query = _db.Shelters.AsQueryable();
+      IQueryable<Animal> query = _db.Animals.AsQueryable();
 
-      if (comment != null)
+      if (name != null)
       {
-        query = query.Where(entry => entry.Comment == comment);
+        query = query.Where(entry => entry.Name == name);
       }
 
-      if (group != null)
+      if (description != null)
       {
-        query = query.Where(entry => entry.Group == group);
+        query = query.Where(entry => entry.Description == description);
       }
 
-      if (userName != null)
+      if (type != null)
       {
-        query = query.Where(entry => entry.UserName == userName);
+        query = query.Where(entry => entry.Type == type);
       }
       return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Shelter>> GetShelter(int id)
+    public async Task<ActionResult<Animal>> GetAnimal(int id)
     {
-      Shelter shelter = await _db.Shelters.FindAsync(id);
+      Animal animal = await _db.Animals.FindAsync(id);
 
-      if (shelter == null)
+      if (animal == null)
       {
         return NotFound();
       }
       
-      return shelter;
+      return animal;
     }
 
     [HttpPost]
-    public async Task<ActionResult<Shelter>> Post(Shelter shelter)
+    public async Task<ActionResult<Animal>> Post(Animal animal)
     {
-      _db.Shelters.Add(shelter);
+      _db.Animals.Add(animal);
       await _db.SaveChangesAsync();
-      return CreatedAtAction(nameof(GetShelter), new { id = shelter.ShelterId }, shelter);
+      return CreatedAtAction(nameof(GetAnimal), new { id = animal.AnimalId }, animal);
     }
 
-    //PUT: api/Shelters/5
+    //PUT: api/Animals/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Shelter shelter)
+    public async Task<IActionResult> Put(int id, Animal animal)
     {
-      if (id != shelter.ShelterId)
+      if (id != animal.AnimalId)
       {
         return BadRequest();
       }
 
-      _db.Shelters.Update(shelter);
+      _db.Animals.Update(animal);
 
       try
       {
@@ -80,7 +79,7 @@ namespace AnimalShelterApi.Controllers.v1
       }
       catch (DbUpdateConcurrencyException)
       {
-        if (!ShelterExists(id))
+        if (!AnimalExists(id))
         {
           return NotFound();
         }
@@ -93,21 +92,21 @@ namespace AnimalShelterApi.Controllers.v1
       return NoContent();
     }
 
-    private bool ShelterExists(int id)
+    private bool AnimalExists(int id)
     {
-      return _db.Shelters.Any(e => e.ShelterId == id);
+      return _db.Animals.Any(e => e.AnimalId == id);
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteShelter(int id)
+    public async Task<IActionResult> DeleteAnimal(int id)
     {
-      Shelter shelter = await _db.Shelters.FindAsync(id);
-      if (shelter == null)
+      Animal animal = await _db.Animals.FindAsync(id);
+      if (animal == null)
       {
         return NotFound();
       }
 
-      _db.Shelters.Remove(shelter);
+      _db.Animals.Remove(animal);
       await _db.SaveChangesAsync();
 
       return NoContent();
