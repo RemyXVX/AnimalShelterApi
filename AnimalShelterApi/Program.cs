@@ -9,11 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using AnimalShelterApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddDbContext<AnimalShelterApiContext>(
 	dbContextOptions => dbContextOptions
@@ -29,7 +27,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApiVersioning(opt =>
 {
-	opt.DefaultApiVersion = new ApiVersion(1,0);
+	opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
 	opt.AssumeDefaultVersionWhenUnspecified = true;
 	opt.ReportApiVersions = true;
 	opt.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
@@ -42,6 +40,9 @@ builder.Services.AddVersionedApiExplorer(setup =>
 	setup.GroupNameFormat = "'v'VVV";
 	setup.SubstituteApiVersionInUrl = true;
 });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
@@ -69,9 +70,11 @@ app.UseHttpsRedirection();
 // app.UseRequestLocalization(options);
 // app.UseStaticFiles();
 // app.UseMiddleware<LocalizerMiddleware>();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
+
+app.UseCors(builder =>
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
