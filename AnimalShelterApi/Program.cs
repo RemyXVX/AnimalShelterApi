@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Swashbuckle.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
-using AnimalShelter.Models;
+using AnimalShelterApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddDbContext<AnimalShelterContext>(
+builder.Services.AddDbContext<AnimalShelterApiContext>(
 	dbContextOptions => dbContextOptions
 	.UseMySql(
 		builder.Configuration["ConnectionStrings:DefaultConnection"],
