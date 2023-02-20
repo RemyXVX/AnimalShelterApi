@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-
   public class ConfigureSwaggerOptions 
   : IConfigureNamedOptions<SwaggerGenOptions>
   {
@@ -14,13 +13,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
     {
       _provider = provider;
     }
-    /// <summary>
-    ///Config. ea API discovered for swag. doc.
-    /// </summary>
-    /// <param name="options"></param>
+
     public void Configure(SwaggerGenOptions options)
     {
-      //add swagger document for every API version discovered
       foreach (var description in _provider.ApiVersionDescriptions)
       {
         options.SwaggerDoc(
@@ -28,21 +23,12 @@ using Swashbuckle.AspNetCore.SwaggerGen;
           CreateVersionInfo(description));
       }
     }
-    /// <summary>
-    /// Configure Swagger Options. Inherited from the Interface
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="options"></param>
+
     public void Configure(string name, SwaggerGenOptions options)
     {
       Configure(options);
     }
 
-    /// <summary>
-    /// Create information about the version of the API
-    /// </summary>
-    /// <param name="description"></param>
-    /// <returns>Information about the API</return>
     private OpenApiInfo CreateVersionInfo(ApiVersionDescription desc)
     {
       var info = new OpenApiInfo()
