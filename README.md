@@ -143,4 +143,4 @@ _if the issue appears contact me at_:
 
 ## License
 
-See license [here](./LICENSE.txt)
+See license [here](./LICENSE.md)
